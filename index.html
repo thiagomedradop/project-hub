@@ -1,4 +1,901 @@
 <!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Hub / Thiago</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#x1F680;</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* âââââââââââââââââââââââââââââââââââââââ
+           THEME VARIABLES â applied on <html>
+           âââââââââââââââââââââââââââââââââââââââ */
+        :root {
+            --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --cat-solojet: #3b82f6;
+            --cat-jetpass: #8b5cf6;
+            --cat-personal: #f59e0b;
+        }
+
+        /* DARK THEME */
+        [data-theme="dark"] {
+            --bg: #09090b;
+            --bg-elevated: #0f0f12;
+            --surface: #16161a;
+            --surface-hover: #1c1c21;
+            --surface-active: #27272a;
+            --border: #27272a;
+            --border-hover: #3f3f46;
+            --text: #fafafa;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+            --green: #22c55e;
+            --green-bg: rgba(34,197,94,0.1);
+            --shadow-card: 0 1px 3px rgba(0,0,0,0.3);
+            --shadow-hover: 0 8px 32px rgba(0,0,0,0.45);
+            --grid-line: rgba(255,255,255,0.025);
+            --toggle-bg: #27272a;
+            --toggle-knob: #fafafa;
+            --search-bg: #16161a;
+            --search-border: #27272a;
+            --glow: rgba(59,130,246,0.15);
+        }
+
+        /* LIGHT THEME */
+        [data-theme="light"] {
+            --bg: #f8fafc;
+            --bg-elevated: #ffffff;
+            --surface: #ffffff;
+            --surface-hover: #f1f5f9;
+            --surface-active: #e2e8f0;
+            --border: #e2e8f0;
+            --border-hover: #cbd5e1;
+            --text: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --green: #16a34a;
+            --green-bg: rgba(22,163,74,0.08);
+            --shadow-card: 0 1px 3px rgba(0,0,0,0.06);
+            --shadow-hover: 0 8px 32px rgba(0,0,0,0.1);
+            --grid-line: rgba(0,0,0,0.025);
+            --toggle-bg: #e2e8f0;
+            --toggle-knob: #ffffff;
+            --search-bg: #ffffff;
+            --search-border: #e2e8f0;
+            --glow: rgba(59,130,246,0.1);
+        }
+
+        /* âââââââââââââââââââââââââââââââââââââââ
+           BASE RESET
+           âââââââââââââââââââââââââââââââââââââââ */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-family: var(--font);
+            background-color: var(--bg);
+            color: var(--text);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            transition: background-color var(--transition), color var(--transition);
+        }
+
+        body {
+            min-height: 100vh;
+            background-color: var(--bg);
+            color: var(--text);
+            position: relative;
+        }
+
+        /* Subtle grid background */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid-line) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        a { text-decoration: none; color: inherit; }
+
+        /* âââââââââââââââââââââââââââââââââââââââ
+           LAYOUT
+           âââââââââââââââââââââââââââââââââââââââ */
+        .container {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* âââââââââââââââââââââââââââââââââââââââ
+           HEADER
+           âââââââââââââââââââââââââââââââââââââââ */
+        header {
+            padding: 40px 0 28px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 28px;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: -0.6px;
+            line-height: 1.2;
+            white-space: nowrap;
+        }
+
+        h1 span {
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-shrink: 0;
+        }
+
+        .header-date {
+            color: var(--text-muted);
+            font-size: 13px;
+            white-space: nowrap;
+            display: none;
+        }
+
+        /* Theme toggle */
+        .theme-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            padding: 6px 14px 6px 10px;
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-family: var(--font);
+            font-size: 13px;
+            font-weight: 500;
+            transition: all var(--transition);
+        }
+
+        .theme-btn:hover {
+            border-color: var(--border-hover);
+            background: var(--surface-hover);
+        }
+
+        .theme-btn svg {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+        }
+
+        /* Stats row */
+        .stats-row {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+        }
+
+        .stat-number {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: var(--text);
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        /* âââââââââââââââââââââââââââââââââââââââ
+           SEARCH
+           âââââââââââââââââââââââââââââââââââââââ */
+        .search-wrap {
+            position: relative;
+            margin-bottom: 32px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 16px 12px 44px;
+            background: var(--search-bg);
+            border: 1px solid var(--search-border);
+            border-radius: var(--radius-md);
+            color: var(--text);
+            font-family: var(--font);
+            font-size: 14px;
+            font-weight: 400;
+            outline: none;
+            transition: all var(--transition);
+        }
+
+        .search-input::placeholder { color: var(--text-muted); }
+
+        .search-input:focus {
+            border-color: var(--cat-solojet);
+            box-shadow: 0 0 0 3px var(--glow);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            pointer-events: none;
+            display: flex;
+        }
+
+        .search-count {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .search-shortcut {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 11px;
+            font-weight: 500;
+            background: var(--surface-active);
+            padding: 2px 8px;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        .search-input:focus ~ .search-shortcut { display: none; }
+
+        /* âââââââââââââââââââââââââââââââââââââââ
+           CATEGORY SECTIONS
+           âââââââââââââââââââââââââââââââââââââââ */
+        .category {
+            margin-bottom: 40px;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+            padding-left: 2px;
+        }
+
+        .category-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .category-title {
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-secondary);
+        }
+
+        .category-line {
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+            margin-left: 4px;
+        }
+
+        .category-count {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 500;
+            flex-shrink: 0;
+        }
+
+        /* âââââââââââââââââââââââââââââââââââââââ
+           PROJECT CARDS
+           âââââââââââââââââââââââââââââââââââââââ */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        .project-card {
+            display: block;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 18px;
+            transition: all var(--transition);
+            cursor: pointer;
+            position: relative;
+            box-shadow: var(--shadow-card);
+        }
+
+        .project-card:hover {
+            background: var(--surface-hover);
+            border-color: var(--border-hover);
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-2px);
+        }
+
+        .project-card.hidden { display: none; }
+
+        .card-row-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .card-identity {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 0;
+        }
+
+        .card-cat-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .project-name {
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: -0.2px;
+            color: var(--text);
+        }
+
+        .status-pill {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 100px;
+            background: var(--green-bg);
+            color: var(--green);
+            flex-shrink: 0;
+            letter-spacing: 0.2px;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: currentColor;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.35; }
+        }
+
+        .project-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 14px;
+        }
+
+        .card-row-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .tech-tags {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            font-size: 11px;
+            padding: 3px 9px;
+            border-radius: 6px;
+            background: var(--surface-active);
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .tag.supabase {
+            background: rgba(62, 207, 142, 0.1);
+            color: #3ecf8e;
+        }
+
+        .domain-link {
+            font-size: 12px;
+            color: var(--text-muted);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            max-width: 220px;
+            font-weight: 400;
+        }
+
+        .domain-link.custom {
+            color: var(--cat-solojet);
+            font-weight: 500;
+        }
+
+        .card-arrow {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            color: var(--text-muted);
+            opacity: 0;
+            transition: opacity var(--transition), transform var(--transition);
+        }
+
+        .project-card:hover .card-arrow {
+            opacity: 1;
+            transform: translate(1px, -1px);
+        }
+
+        /* âââââââââââââââââââââââââââââââââââââââ
+           EMPTY STATE
+           âââââââââââââââââââââââââââââââââââââââ */
+        .empty-state {
+            text-align: center;
+            padding: 56px 20px;
+            color: var(--text-muted);
+            display: none;
+        }
+
+        .empty-state.visible { display: block; }
+
+        .empty-state p:first-child {
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+
+        .empty-state p:last-child {
+            font-size: 14px;
+        }
+
+        /* âââââââââââââââââââââââââââââââââââââââ
+           FOOTER
+           âââââââââââââââââââââââââââââââââââââââ */
+        footer {
+            padding: 28px 0 36px;
+            border-top: 1px solid var(--border);
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        footer p {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* âââââââââââââââââââââââââââââââââââââââ
+           RESPONSIVE
+           âââââââââââââââââââââââââââââââââââââââ */
+        @media (min-width: 640px) {
+            .header-date { display: block; }
+
+            .projects-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .search-input {
+                font-size: 15px;
+                padding: 13px 16px 13px 44px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .container { padding: 0 40px; }
+
+            header { padding: 48px 0 32px; }
+
+            h1 { font-size: 28px; }
+
+            .projects-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .project-card { padding: 20px; }
+        }
+
+        /* âââââââââââââââââââââââââââââââââââââââ
+           TOUCH DEVICES
+           âââââââââââââââââââââââââââââââââââââââ */
+        @media (hover: none) {
+            .project-card:hover {
+                transform: none;
+                box-shadow: var(--shadow-card);
+            }
+
+            .project-card:active {
+                background: var(--surface-active);
+                transform: scale(0.985);
+            }
+
+            .card-arrow { display: none; }
+        }
+
+        @supports (padding: env(safe-area-inset-bottom)) {
+            footer { padding-bottom: calc(36px + env(safe-area-inset-bottom)); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- HEADER -->
+        <header>
+            <div class="header-top">
+                <h1>Project Hub <span>/ Thiago</span></h1>
+                <div class="header-controls">
+                    <span class="header-date">Atualizado em 02 Abr 2026</span>
+                    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" aria-label="Alternar tema">
+                        <svg id="iconSun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                        <svg id="iconMoon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                        <span id="themeLabel">Dark</span>
+                    </button>
+                </div>
+            </div>
+            <div class="stats-row">
+                <div class="stat">
+                    <span class="stat-number">9</span>
+                    <span class="stat-label">projetos Vercel</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">1</span>
+                    <span class="stat-label">banco Supabase</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">3</span>
+                    <span class="stat-label">dom&#237;nios custom</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- SEARCH -->
+        <div class="search-wrap">
+            <div class="search-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </div>
+            <input type="text" class="search-input" id="search" placeholder="Buscar projetos..." oninput="filterProjects()">
+            <span class="search-count" id="searchCount"></span>
+            <span class="search-shortcut" id="searchHint">/</span>
+        </div>
+
+        <!-- ââââââââââââââââââââââââââââââââââââ
+             SOLOJET GROUP
+             ââââââââââââââââââââââââââââââââââââ -->
+        <section class="category" data-category="solojet">
+            <div class="category-header">
+                <div class="category-dot" style="background: var(--cat-solojet)"></div>
+                <span class="category-title">Solojet Group</span>
+                <div class="category-line"></div>
+                <span class="category-count">6 projetos</span>
+            </div>
+            <div class="projects-grid">
+
+                <a href="https://pesquisa-eb-dashboard.vercel.app" target="_blank" rel="noopener" class="project-card" data-cat="solojet" data-search="pesquisa eb employer brand marca empregadora dashboard enps lnps cultura colaboradores">
+                    <div class="card-row-top">
+                        <div class="card-identity">
+                            <div class="card-cat-dot" style="background: var(--cat-solojet)"></div>
+                            <span class="project-name">Pesquisa EB Dashboard</span>
+                        </div>
+                        <div class="status-pill"><div class="status-dot"></div>Live</div>
+                    </div>
+                    <p class="project-desc">Dashboard de Employer Brand Solojet &#8212; pesquisa interna, eNPS, pilares de marca empregadora.</p>
+                    <div class="card-row-bottom">
+                        <div class="tech-tags"><span class="tag">HTML</span><span class="tag">Vercel</span></div>
+                        <span class="domain-link">pesquisa-eb-dashboard.vercel.app</span>
+                    </div>
+                    <svg class="card-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+                </a>
+
+                <a href="https://solojetshares.com.br" target="_blank" rel="noopener" class="project-card" data-cat="solojet" data-search="solojet app shares cotas institucional simulador vite">
+                    <div class="card-row-top">
+                        <div class="card-identity">
+                            <div class="card-cat-dot" style="background: var(--cat-solojet)"></div>
+                            <span class="project-name">Solojet App</span>
+                        </div>
+                        <div class="status-pill"><div class="status-dot"></div>Live</div>
+                    </div>
+                    <p class="project-desc">Site institucional Solojet Shares &#8212; simulador de cotas, &#225;rea do cotista, landing pages.</p>
+                    <div class="card-row-bottom">
+                        <div class="tech-tags"><span class="tag">Vite</span><span class="tag">Vercel</span></div>
+                        <span class="domain-link custom">solojetshares.com.br</span>
+                    </div>
+                    <svg class="card-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+                </a>
+
+                <a href="https://hawker.solojetshares.com.br" target="_blank" rel="noopener" class="project-card" data-cat="solojet" data-search="hawker market dashboard monitor aeronaves venda inventario be40 400xp">
+                    <div class="card-row-top">
+                        <div class="card-identity">
+                            <div class="card-cat-dot" style="background: var(--cat-solojet)"></div>
+                            <span class="project-name">Hawker Market Dashboard</span>
+                        </div>
+                        <div class="status-pill"><div class="status-dot"></div>Live</div>
+                    </div>
+                    <p class="project-desc">Monitor global de Hawker 400XP / Beechjet 400A &#224; venda &#8212; pre&#231;os, invent&#225;rio, tend&#234;ncias.</p>
+                    <div class="card-row-bottom">
+                        <div class="tech-tags"><span class="tag">HTML</span><span class="tag">Vercel</span></div>
+                        <span class="domain-link custom">hawker.solojetshares.com.br</span>
+                    </div>
+                    <svg class="card-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+                </a>
+
+                <a href="https://dashboard-omega-bice.vercel.app" target="_blank" rel="noopener" class="project-card" data-cat="solojet" data-search="dashboard marketing mkt meta ads crm funil vendas performance">
+                    <div class="card-row-top">
+                        <div class="card-identity">
+                            <div class="card-cat-dot" style="background: var(--cat-solojet)"></div>
+                            <span class="project-name">Dashboard MKT</span>
+                        </div>
+                        <div class="status-pill"><div class="status-dot"></div>Live</div>
+                    </div>
+                    <p class="project-desc">Dashboard de marketing Solojet &#8212; Meta Ads, CRM, funil de vendas, performance por canal.</p>
+                    <div class="card-row-bottom">
+                        <div class="tech-tags"><span class="tag">HTML</span><span class="tag">Vercel</span></div>
+                        <span class="domain-link">dashboard-omega-bice.vercel.app</span>
+                    </div>
+                    <svg class="card-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+                </a>
+
+                <a href="https://solocrm.vercel.app" target="_blank" rel="noopener" class="project-card" data-cat="solojet" data-search="solocrm crm leads pipeline followup gestao vendas nextjs">
+                    <div class="card-row-top">
+                        <div class="card-identity">
+                            <div class="card-cat-dot" style="background: var(--cat-solojet)"></div>
+                            <span class="project-name">SoloCRM</span>
+                        </div>
+                        <div class="status-pill"><div class="status-dot"></div>Live</div>
+                    </div>
+                    <p class="project-desc">CRM customizado Solojet &#8212; gest&#227;o de leads, pipeline de vendas, follow-ups.</p>
+                    <div class="card-row-bottom">
+                        <div class="tech-tags"><span class="tag">Next.js</span><span class="tag">Vercel</span></div>
+                        <span class="domain-link">solocrm.vercel.app</span>
+                    </div>
+                    <svg class="card-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+                </a>
+
+                <a href="https://anac-be40-monitor.vercel.app" target="_blank" rel="noopener" class="project-card" data-cat="solojet" data-search="anac be40 monitor rab aeronaves hawker 400 registro matricula">
+                    <div class="card-row-top">
+                        <div class="card-identity">
+                            <div class="card-cat-dot" style="background: var(--cat-solojet)"></div>
+                            <span class="project-name">ANAC BE40 Monitor</span>
+                        </div>
+                        <div class="status-pill"><div class="status-dot"></div>Live</div>
+                    </div>
+                    <p class="project-desc">Monitoramento de Hawker 400 (BE40) no RAB da ANAC &#8212; status, movimenta&#231;&#245;es, reservas de marca.</p>
+                    <div class="card-row-bottom">
+                        <div class="tech-tags"><span class="tag">HTML</span><span class="tag">Vercel</span></div>
+                        <span class="domain-link">anac-be40-monitor.vercel.app</span>
+                    </div>
+                    <svg class="card-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+                </a>
+
+            </div>
+        </section>
+
+        <!-- ââââââââââââââââââââââââââââââââââââ
+             JETPASS
+             ââââââââââââââââââââââââââââââââââââ -->
+        <section class="category" data-category="jetpass">
+            <div class="category-header">
+                <div class="category-dot" style="background: var(--cat-jetpass)"></div>
+                <span class="category-title">JetPass</span>
+                <div class="category-line"></div>
+                <span class="category-count">1 projeto</span>
+            </div>
+            <div class="projects-grid">
+
+                <a href="https://jetpass.vercel.app" target="_blank" rel="noopener" class="project-card" data-cat="jetpass" data-search="jetpass marketplace empty legs aviacao executiva voos ociosos nextjs">
+                    <div class="card-row-top">
+                        <div class="card-identity">
+                            <div class="card-cat-dot" style="background: var(--cat-jetpass)"></div>
+                            <span class="project-name">JetPass</span>
+                        </div>
+                        <div class="status-pill"><div class="status-dot"></div>Live</div>
+                    </div>
+                    <p class="project-desc">Marketplace de empty legs &#8212; conecta passageiros a assentos ociosos em voos executivos.</p>
+                    <div class="card-row-bottom">
+                        <div class="tech-tags"><span class="tag">Next.js</span><span class="tag">Vercel</span></div>
+                        <span class="domain-link">jetpass.vercel.app</span>
+                    </div>
+                    <svg class="card-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+                </a>
+
+            </div>
+        </section>
+
+        <!-- ââââââââââââââââââââââââââââââââââââ
+             PESSOAL
+             ââââââââââââââââââââââââââââââââââââ -->
+        <section class="category" data-category="pessoal">
+            <div class="category-header">
+                <div class="category-dot" style="background: var(--cat-personal)"></div>
+                <span class="category-title">Pessoal</span>
+                <div class="category-line"></div>
+                <span class="category-count">2 projetos</span>
+            </div>
+            <div class="projects-grid">
+
+                <a href="https://prenatal-app-five.vercel.app" target="_blank" rel="noopener" class="project-card" data-cat="pessoal" data-search="prenatal app gestante gravidez pre natal cartao digital exames">
+                    <div class="card-row-top">
+                        <div class="card-identity">
+                            <div class="card-cat-dot" style="background: var(--cat-personal)"></div>
+                            <span class="project-name">Prenatal App</span>
+                        </div>
+                        <div class="status-pill"><div class="status-dot"></div>Live</div>
+                    </div>
+                    <p class="project-desc">Cart&#227;o pr&#233;-natal digital &#8212; acompanhamento gestacional, exames, evolu&#231;&#227;o semana a semana.</p>
+                    <div class="card-row-bottom">
+                        <div class="tech-tags"><span class="tag">React</span><span class="tag">Vercel</span><span class="tag supabase">Supabase</span></div>
+                        <span class="domain-link">prenatal-app-five.vercel.app</span>
+                    </div>
+                    <svg class="card-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+                </a>
+
+                <a href="https://v2-deploy-weld.vercel.app" target="_blank" rel="noopener" class="project-card" data-cat="pessoal" data-search="v2 deploy pessoal experimental staging">
+                    <div class="card-row-top">
+                        <div class="card-identity">
+                            <div class="card-cat-dot" style="background: var(--cat-personal)"></div>
+                            <span class="project-name">v2-deploy</span>
+                        </div>
+                        <div class="status-pill"><div class="status-dot"></div>Live</div>
+                    </div>
+                    <p class="project-desc">Projeto pessoal &#8212; deploy experimental / staging.</p>
+                    <div class="card-row-bottom">
+                        <div class="tech-tags"><span class="tag">HTML</span><span class="tag">Vercel</span></div>
+                        <span class="domain-link">v2-deploy-weld.vercel.app</span>
+                    </div>
+                    <svg class="card-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+                </a>
+
+            </div>
+        </section>
+
+        <!-- EMPTY STATE -->
+        <div class="empty-state" id="emptyState">
+            <p>&#128269;</p>
+            <p>Nenhum projeto encontrado.</p>
+        </div>
+
+        <!-- FOOTER -->
+        <footer>
+            <p>Built with Claude &#183; Abr 2026</p>
+            <p>Sync: 02/04/2026</p>
+        </footer>
+
+    </div>
+
+    <script>
+        // ââ Theme Management ââ
+        var root = document.documentElement;
+        var label = document.getElementById('themeLabel');
+        var iconSun = document.getElementById('iconSun');
+        var iconMoon = document.getElementById('iconMoon');
+
+        function getPreferredTheme() {
+            var saved = null;
+            try { saved = localStorage.getItem('ph-theme'); } catch(e) {}
+            if (saved === 'light' || saved === 'dark') return saved;
+            return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+        }
+
+        function applyTheme(t) {
+            root.setAttribute('data-theme', t);
+            try { localStorage.setItem('ph-theme', t); } catch(e) {}
+            label.textContent = t === 'dark' ? 'Dark' : 'Light';
+            iconSun.style.display = t === 'dark' ? 'none' : 'block';
+            iconMoon.style.display = t === 'dark' ? 'block' : 'none';
+        }
+
+        function toggleTheme() {
+            var current = root.getAttribute('data-theme');
+            applyTheme(current === 'dark' ? 'light' : 'dark');
+        }
+
+        applyTheme(getPreferredTheme());
+
+        // ââ Search / Filter ââ
+        function filterProjects() {
+            var query = document.getElementById('search').value.toLowerCase().trim();
+            var cards = document.querySelectorAll('.project-card');
+            var visible = 0;
+            var catVisible = {};
+
+            cards.forEach(function(card) {
+                var text = (card.getAttribute('data-search') + ' ' + card.textContent).toLowerCase();
+                var match = !query || text.indexOf(query) !== -1;
+                if (match) {
+                    card.classList.remove('hidden');
+                    visible++;
+                    var cat = card.closest('.category');
+                    if (cat) catVisible[cat.getAttribute('data-category')] = true;
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+
+            document.querySelectorAll('.category').forEach(function(sec) {
+                sec.style.display = (query && !catVisible[sec.getAttribute('data-category')]) ? 'none' : '';
+            });
+
+            var countEl = document.getElementById('searchCount');
+            var hintEl = document.getElementById('searchHint');
+            if (query) {
+                countEl.textContent = visible + ' resultado' + (visible !== 1 ? 's' : '');
+                hintEl.style.display = 'none';
+            } else {
+                countEl.textContent = '';
+                hintEl.style.display = '';
+            }
+
+            document.getElementById('emptyState').classList.toggle('visible', query && visible === 0);
+        }
+
+        // ââ Keyboard Shortcuts ââ
+        document.addEventListener('keydown', function(e) {
+            if (e.key === '/' && document.activeElement.tagName !== 'INPUT') {
+                e.preventDefault();
+                document.getElementById('search').focus();
+            }
+            if (e.key === 'Escape') {
+                document.getElementById('search').value = '';
+                document.getElementById('search').blur();
+                filterProjects();
+            }
+        });
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
