@@ -7,9 +7,6 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#x1F680;</text></svg>">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        /* âââââââââââââââââââââââââââââââââââââââ
-           THEME VARIABLES â applied on <html>
-           âââââââââââââââââââââââââââââââââââââââ */
         :root {
             --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             --radius-sm: 8px;
@@ -21,7 +18,6 @@
             --cat-personal: #f59e0b;
         }
 
-        /* DARK THEME */
         [data-theme="dark"] {
             --bg: #09090b;
             --bg-elevated: #0f0f12;
@@ -45,7 +41,6 @@
             --glow: rgba(59,130,246,0.15);
         }
 
-        /* LIGHT THEME */
         [data-theme="light"] {
             --bg: #f8fafc;
             --bg-elevated: #ffffff;
@@ -69,9 +64,6 @@
             --glow: rgba(59,130,246,0.1);
         }
 
-        /* âââââââââââââââââââââââââââââââââââââââ
-           BASE RESET
-           âââââââââââââââââââââââââââââââââââââââ */
         *, *::before, *::after {
             margin: 0;
             padding: 0;
@@ -94,7 +86,6 @@
             position: relative;
         }
 
-        /* Subtle grid background */
         body::before {
             content: '';
             position: fixed;
@@ -109,9 +100,6 @@
 
         a { text-decoration: none; color: inherit; }
 
-        /* âââââââââââââââââââââââââââââââââââââââ
-           LAYOUT
-           âââââââââââââââââââââââââââââââââââââââ */
         .container {
             max-width: 1120px;
             margin: 0 auto;
@@ -120,9 +108,6 @@
             z-index: 1;
         }
 
-        /* âââââââââââââââââââââââââââââââââââââââ
-           HEADER
-           âââââââââââââââââââââââââââââââââââââââ */
         header {
             padding: 40px 0 28px;
             border-bottom: 1px solid var(--border);
@@ -164,7 +149,6 @@
             display: none;
         }
 
-        /* Theme toggle */
         .theme-btn {
             display: flex;
             align-items: center;
@@ -192,7 +176,6 @@
             flex-shrink: 0;
         }
 
-        /* Stats row */
         .stats-row {
             display: flex;
             gap: 24px;
@@ -218,9 +201,6 @@
             font-weight: 400;
         }
 
-        /* âââââââââââââââââââââââââââââââââââââââ
-           SEARCH
-           âââââââââââââââââââââââââââââââââââââââ */
         .search-wrap {
             position: relative;
             margin-bottom: 32px;
@@ -285,9 +265,6 @@
 
         .search-input:focus ~ .search-shortcut { display: none; }
 
-        /* âââââââââââââââââââââââââââââââââââââââ
-           CATEGORY SECTIONS
-           âââââââââââââââââââââââââââââââââââââââ */
         .category {
             margin-bottom: 40px;
         }
@@ -329,9 +306,6 @@
             flex-shrink: 0;
         }
 
-        /* âââââââââââââââââââââââââââââââââââââââ
-           PROJECT CARDS
-           âââââââââââââââââââââââââââââââââââââââ */
         .projects-grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -479,9 +453,6 @@
             transform: translate(1px, -1px);
         }
 
-        /* âââââââââââââââââââââââââââââââââââââââ
-           EMPTY STATE
-           âââââââââââââââââââââââââââââââââââââââ */
         .empty-state {
             text-align: center;
             padding: 56px 20px;
@@ -500,9 +471,6 @@
             font-size: 14px;
         }
 
-        /* âââââââââââââââââââââââââââââââââââââââ
-           FOOTER
-           âââââââââââââââââââââââââââââââââââââââ */
         footer {
             padding: 28px 0 36px;
             border-top: 1px solid var(--border);
@@ -517,9 +485,6 @@
             color: var(--text-muted);
         }
 
-        /* âââââââââââââââââââââââââââââââââââââââ
-           RESPONSIVE
-           âââââââââââââââââââââââââââââââââââââââ */
         @media (min-width: 640px) {
             .header-date { display: block; }
 
@@ -547,9 +512,6 @@
             .project-card { padding: 20px; }
         }
 
-        /* âââââââââââââââââââââââââââââââââââââââ
-           TOUCH DEVICES
-           âââââââââââââââââââââââââââââââââââââââ */
         @media (hover: none) {
             .project-card:hover {
                 transform: none;
@@ -572,12 +534,11 @@
 <body>
     <div class="container">
 
-        <!-- HEADER -->
         <header>
             <div class="header-top">
                 <h1>Project Hub <span>/ Thiago</span></h1>
                 <div class="header-controls">
-                    <span class="header-date">Atualizado em 03 Abr 2026</span>
+                    <span class="header-date">Atualizado em 19 Abr 2026</span>
                     <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" aria-label="Alternar tema">
                         <svg id="iconSun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
                         <svg id="iconMoon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
@@ -587,7 +548,7 @@
             </div>
             <div class="stats-row">
                 <div class="stat">
-                    <span class="stat-number">10</span>
+                    <span class="stat-number">11</span>
                     <span class="stat-label">projetos Vercel</span>
                 </div>
                 <div class="stat">
@@ -601,7 +562,6 @@
             </div>
         </header>
 
-        <!-- SEARCH -->
         <div class="search-wrap">
             <div class="search-icon">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -611,15 +571,13 @@
             <span class="search-shortcut" id="searchHint">/</span>
         </div>
 
-        <!-- ââââââââââââââââââââââââââââââââââââ
-             SOLOJET GROUP
-             ââââââââââââââââââââââââââââââââââââ -->
+        <!-- SOLOJET GROUP -->
         <section class="category" data-category="solojet">
             <div class="category-header">
                 <div class="category-dot" style="background: var(--cat-solojet)"></div>
                 <span class="category-title">Solojet Group</span>
                 <div class="category-line"></div>
-                <span class="category-count">6 projetos</span>
+                <span class="category-count">7 projetos</span>
             </div>
             <div class="projects-grid">
 
@@ -703,6 +661,22 @@
                     <svg class="card-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
                 </a>
 
+                <a href="https://anac-c680-mro-monitor.vercel.app" target="_blank" rel="noopener" class="project-card" data-cat="solojet" data-search="anac c680 mro monitor citation sovereign rab servicos manutencao pipeline">
+                    <div class="card-row-top">
+                        <div class="card-identity">
+                            <div class="card-cat-dot" style="background: var(--cat-solojet)"></div>
+                            <span class="project-name">ANAC C680 MRO Monitor</span>
+                        </div>
+                        <div class="status-pill"><div class="status-dot"></div>Live</div>
+                    </div>
+                    <p class="project-desc">Monitor de Citation Sovereign (C680) no RAB da ANAC &#8212; pipeline MRO para Solojet Servi&#231;os.</p>
+                    <div class="card-row-bottom">
+                        <div class="tech-tags"><span class="tag">HTML</span><span class="tag">Vercel</span></div>
+                        <span class="domain-link">anac-c680-mro-monitor.vercel.app</span>
+                    </div>
+                    <svg class="card-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+                </a>
+
                 <a href="https://dashboard-mkt-solojet.vercel.app" target="_blank" rel="noopener" class="project-card" data-cat="solojet" data-search="dashboard mkt marketing solojet crm meta ads kpi funil shares servicos">
                     <div class="card-row-top">
                         <div class="card-identity">
@@ -722,9 +696,7 @@
             </div>
         </section>
 
-        <!-- ââââââââââââââââââââââââââââââââââââ
-             JETPASS
-             ââââââââââââââââââââââââââââââââââââ -->
+        <!-- JETPASS -->
         <section class="category" data-category="jetpass">
             <div class="category-header">
                 <div class="category-dot" style="background: var(--cat-jetpass)"></div>
@@ -753,9 +725,7 @@
             </div>
         </section>
 
-        <!-- ââââââââââââââââââââââââââââââââââââ
-             PESSOAL
-             ââââââââââââââââââââââââââââââââââââ -->
+        <!-- PESSOAL -->
         <section class="category" data-category="pessoal">
             <div class="category-header">
                 <div class="category-dot" style="background: var(--cat-personal)"></div>
@@ -816,22 +786,19 @@
             </div>
         </section>
 
-        <!-- EMPTY STATE -->
         <div class="empty-state" id="emptyState">
             <p>&#128269;</p>
             <p>Nenhum projeto encontrado.</p>
         </div>
 
-        <!-- FOOTER -->
         <footer>
             <p>Built with Claude &#183; Abr 2026</p>
-            <p>Sync: 03/04/2026</p>
+            <p>Sync: 19/04/2026</p>
         </footer>
 
     </div>
 
     <script>
-        // ââ Theme Management ââ
         var root = document.documentElement;
         var label = document.getElementById('themeLabel');
         var iconSun = document.getElementById('iconSun');
@@ -859,7 +826,6 @@
 
         applyTheme(getPreferredTheme());
 
-        // ââ Search / Filter ââ
         function filterProjects() {
             var query = document.getElementById('search').value.toLowerCase().trim();
             var cards = document.querySelectorAll('.project-card');
@@ -896,7 +862,6 @@
             document.getElementById('emptyState').classList.toggle('visible', query && visible === 0);
         }
 
-        // ââ Keyboard Shortcuts ââ
         document.addEventListener('keydown', function(e) {
             if (e.key === '/' && document.activeElement.tagName !== 'INPUT') {
                 e.preventDefault();
